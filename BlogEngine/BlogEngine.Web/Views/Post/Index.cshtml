@@ -1,0 +1,36 @@
+﻿@model IEnumerable<BlogEngine.BusinessLogic.Models.Post>
+
+@{
+    ViewData["Title"] = "Posts";
+}
+
+@foreach (var item in Model)
+{
+    <div class="row">
+        <div class="col-md-12">
+            <div class="row no-gutters border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 position-relative">
+                <div class="col p-4 d-flex flex-column position-static">
+                    <strong class="d-inline-block mb-2 text-primary">@Html.DisplayFor(modelItem => item.AuthorName)</strong>
+                    <h3 class="mb-0">@Html.DisplayFor(modelItem => item.Title)</h3>
+                    <div class="mb-1 text-muted">
+                        <p>Published by <strong>@Html.DisplayFor(modelItem => item.ApproverName)</strong> - @Html.DisplayFor(modelItem => item.ApprovalDateTime)</p>
+                    </div>
+                    <p class="card-text mb-auto" style="text-align:justify">
+                        @Html.DisplayFor(modelItem => item.BodyTrimmed)
+                        <a asp-action="Details" asp-route-id="@item.Id">Continue reading</a>
+                    </p>
+                </div>
+                <div class="col-auto d-none d-lg-block">
+                    @if (item.ImageUrl != null)
+                    {
+                        <img src="@Html.DisplayFor(modelItem => item.ImageUrl)" width="200" height="250" />
+                    }
+                    else
+                    {
+                        <svg class="bd-placeholder-img" width="200" height="250" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice" focusable="false" role="img" aria-label="Placeholder: Thumbnail"><title>Placeholder</title><rect width="100%" height="100%" fill="#55595c" /><text x="30%" y="50%" fill="#eceeef">Thumbnail</text></svg>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+}

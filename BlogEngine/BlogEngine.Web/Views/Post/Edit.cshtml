@@ -1,0 +1,79 @@
+﻿@model BlogEngine.BusinessLogic.Models.Post
+
+@{
+    ViewData["Title"] = "Edit";
+}
+
+<h1>Edit</h1>
+
+<h4>Post</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Edit">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="Id" />
+            <div class="form-group">
+                <label asp-for="Title" class="control-label"></label>
+                <input asp-for="Title" class="form-control" />
+                <span asp-validation-for="Title" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Body" class="control-label"></label>
+                <input asp-for="Body" class="form-control" />
+                <span asp-validation-for="Body" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ImageUrl" class="control-label"></label>
+                <input asp-for="ImageUrl" class="form-control" />
+                <span asp-validation-for="ImageUrl" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="AuthorName" class="control-label"></label>
+                <input asp-for="AuthorName" class="form-control" />
+                <span asp-validation-for="AuthorName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="PendingToApprove" class="control-label"></label>
+                <input asp-for="PendingToApprove" class="form-control" />
+                <span asp-validation-for="PendingToApprove" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ApproverName" class="control-label"></label>
+                <input asp-for="ApproverName" class="form-control" />
+                <span asp-validation-for="ApproverName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ApprovalDateTime" class="control-label"></label>
+                <input asp-for="ApprovalDateTime" class="form-control" />
+                <span asp-validation-for="ApprovalDateTime" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="IsPublished" class="control-label"></label>
+                <input asp-for="IsPublished" class="form-control" />
+                <span asp-validation-for="IsPublished" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="CreationDate" class="control-label"></label>
+                <input asp-for="CreationDate" class="form-control" />
+                <span asp-validation-for="CreationDate" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="LastUpdated" class="control-label"></label>
+                <input asp-for="LastUpdated" class="form-control" />
+                <span asp-validation-for="LastUpdated" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Save" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
