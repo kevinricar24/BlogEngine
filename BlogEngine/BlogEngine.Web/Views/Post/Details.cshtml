@@ -31,6 +31,34 @@
                 }
             </div>
         </div>
+        <hr />
+
+        @using (Html.BeginForm("Create", "Comments", FormMethod.Post))
+        {
+            <div class="row">
+                <div class="col-md-8 blog-main">
+                    <form asp-action="Create">
+                        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                        <input type="hidden" name="postId" value="@Html.DisplayFor(modelItem => Model.Id)" />
+                        <div class="form-row">
+                            <div class="form-group col-md-6">
+                                <input name="commentAuthor" class="form-control form-control-sm" type="text" placeholder="Name" />
+                            </div>
+                            <div class="form-group col-md-6">
+                                <input name="commentEmail" class="form-control form-control-sm" type="email" placeholder="Email" />
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <textarea name="commentBody" class="form-control form-control-sm" rows="3"></textarea>
+                        </div>
+                        <div class="form-group">
+                            <input type="submit" value="Comment" class="btn btn-dark" />
+                        </div>
+                    </form>
+                </div>
+            </div>
+        }
+
         @if (Model.Comment.Count > 0)
         {
             <div class="row">

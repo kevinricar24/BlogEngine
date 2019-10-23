@@ -36,7 +36,8 @@
                 <span asp-validation-for="Author.Name" class="text-danger"></span>
             </div>
             <div class="form-group">
-                @if (Model.IsPublished != null && Model.IsPublished == false)
+                @if ((Model.IsPublished == null || (Model.IsPublished != null && Model.IsPublished == false)) &&
+                    (Model.PendingToApprove == null || (Model.PendingToApprove != null && Model.PendingToApprove == false)))
                 {
                 <input type="submit" name="command" value="Draft" class="btn btn-secondary" />
                 }
