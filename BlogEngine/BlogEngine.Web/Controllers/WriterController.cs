@@ -1,14 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.EntityFrameworkCore;
-using BlogEngine.BusinessLogic.Models;
+﻿using BlogEngine.BusinessLogic.Models;
 using BlogEngine.DataAccessLayer;
 using BlogEngine.Web.Actions;
 using BlogEngine.Web.Enums;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace BlogEngine.Web.Controllers
 {
