@@ -31,22 +31,6 @@
             }
         </div>
     </div>
-    @foreach (var item in Model.Comment)
-    {
-        <div class="row">
-            <div class="col-md-8 blog-main">
-                <div class="p-4 mb-3 bg-light rounded">
-                    <h5 class="font-italic">
-                        @Html.DisplayFor(modelItem => item.AuthorName)
-                    </h5>
-                    <p style="font-size:small">
-                        @Html.DisplayFor(modelItem => item.AuthorEmail) Posted <b>@Html.DisplayFor(modelItem => item.CreationDate)</b>
-                    </p>
-                    <p class="mb-0" style="text-align:justify">@Html.DisplayFor(modelItem => item.Body)</p>
-                </div>
-            </div>
-        </div>
-    }
     <div>
         <a asp-action="Index">Back</a>
     </div>

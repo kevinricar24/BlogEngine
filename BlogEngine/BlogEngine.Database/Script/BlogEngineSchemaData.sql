@@ -58,14 +58,16 @@ BEGIN
 	Title NVARCHAR(50) NOT NULL,
 	Body NVARCHAR(MAX) NULL,
 	ImageURL NVARCHAR(MAX) NULL,
-	AuthorName NVARCHAR(50) NOT NULL,
+	AuthorId BIGINT NOT NULL,
 	PendingToApprove BIT NULL,
-	ApproverName NVARCHAR(50) NULL,
+	ApproverId BIGINT NULL,
 	ApprovalDateTime DATETIME NULL,
 	IsPublished BIT NULL,
 	CreationDate DATETIME NOT NULL,
 	LastUpdated DATETIME NOT NULL,
-	PRIMARY KEY (Id) 
+	PRIMARY KEY (Id),
+	FOREIGN KEY (AuthorId) REFERENCES Person(Id),
+	FOREIGN KEY (ApproverId) REFERENCES Person(Id) 
 	)
 	PRINT @PostTable + ' TABLE CREATED'
 END

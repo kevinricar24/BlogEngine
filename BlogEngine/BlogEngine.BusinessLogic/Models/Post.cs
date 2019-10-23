@@ -28,14 +28,16 @@ namespace BlogEngine.BusinessLogic.Models
             }
         }
         public string ImageUrl { get; set; }
-        public string AuthorName { get; set; }
+        public long AuthorId { get; set; }
         public bool? PendingToApprove { get; set; }
-        public string ApproverName { get; set; }
+        public long? ApproverId { get; set; }
         public DateTime? ApprovalDateTime { get; set; }
         public bool? IsPublished { get; set; }
         public DateTime CreationDate { get; set; }
         public DateTime LastUpdated { get; set; }
 
+        public virtual Person Approver { get; set; }
+        public virtual Person Author { get; set; }
         public virtual ICollection<Comment> Comment { get; set; }
     }
 }

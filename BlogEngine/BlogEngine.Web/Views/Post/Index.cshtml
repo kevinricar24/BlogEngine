@@ -10,10 +10,10 @@
         <div class="col-md-12">
             <div class="row no-gutters border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 position-relative">
                 <div class="col p-4 d-flex flex-column position-static">
-                    <strong class="d-inline-block mb-2 text-primary">@Html.DisplayFor(modelItem => item.AuthorName)</strong>
+                    <strong class="d-inline-block mb-2 text-primary">@Html.DisplayFor(modelItem => item.Author.Name)</strong>
                     <h3 class="mb-0">@Html.DisplayFor(modelItem => item.Title)</h3>
                     <div class="mb-1 text-muted">
-                        <p>Published by <strong>@Html.DisplayFor(modelItem => item.ApproverName)</strong> - @Html.DisplayFor(modelItem => item.ApprovalDateTime)</p>
+                        <p>Published by <strong>@Html.DisplayFor(modelItem => item.Approver.Name)</strong> - @Html.DisplayFor(modelItem => item.ApprovalDateTime)</p>
                     </div>
                     <p class="card-text mb-auto" style="text-align:justify">
                         @Html.DisplayFor(modelItem => item.BodyTrimmed)
