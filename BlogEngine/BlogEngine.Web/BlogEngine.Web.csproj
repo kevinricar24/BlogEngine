@@ -4,8 +4,9 @@
     <TargetFramework>netcoreapp3.0</TargetFramework>
   </PropertyGroup>
 
-
   <ItemGroup>
+    <ProjectReference Include="..\BlogEngine.BusinessLogic\BlogEngine.BusinessLogic.csproj" />
+    <ProjectReference Include="..\BlogEngine.DataAccessLayer\BlogEngine.DataAccessLayer.csproj" />
   </ItemGroup>
 
 </Project>
