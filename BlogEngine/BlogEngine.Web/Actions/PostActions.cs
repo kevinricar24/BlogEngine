@@ -59,6 +59,7 @@ namespace BlogEngine.Web.Actions
             {
                 item.Author = _context.Person.Where(x => x.Id == item.AuthorId).FirstOrDefault();
                 item.Approver = _context.Person.Where(x => x.Id == item.ApproverId).FirstOrDefault();
+                item.Comment = _context.Comment.Where(x => x.PostId == item.Id).ToList();
             }
 
             return Posts;
