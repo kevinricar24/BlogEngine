@@ -13,6 +13,20 @@ namespace BlogEngine.BusinessLogic.Models
         public long Id { get; set; }
         public string Title { get; set; }
         public string Body { get; set; }
+        public string BodyTrimmed
+        {
+            get
+            {
+                if (Body.Length > 440)
+                {
+                    return Body.Substring(0, 440) + "... ";
+                }
+                else
+                {
+                    return Body;
+                }
+            }
+        }
         public string ImageUrl { get; set; }
         public string AuthorName { get; set; }
         public bool? PendingToApprove { get; set; }
