@@ -16,13 +16,13 @@
                 @Html.DisplayNameFor(model => model.Title)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Author.Name)
+                @Html.DisplayNameFor(model => model.Author)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.PendingToApprove)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Approver.Name)
+                @Html.DisplayNameFor(model => model.Approver)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.ApprovalDateTime)
@@ -64,7 +64,7 @@
                 @Html.DisplayFor(modelItem => item.LastUpdated)
             </td>
             <td>
-                <a asp-action="Details" asp-route-id="@item.Id">Details</a>
+                <a asp-action="Details" asp-route-id="@item.Id">Preview</a>
                 @if (item.PendingToApprove == null || item.PendingToApprove == false)
                 {
                     <b> | </b>

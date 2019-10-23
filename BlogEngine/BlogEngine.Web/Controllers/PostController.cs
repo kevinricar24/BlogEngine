@@ -1,6 +1,10 @@
-﻿using BlogEngine.DataAccessLayer;
+﻿using BlogEngine.BusinessLogic.Models;
+using BlogEngine.DataAccessLayer;
+using BlogEngine.Web.Actions;
+using BlogEngine.Web.Enums;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -9,22 +13,18 @@ namespace BlogEngine.Web.Controllers
     public class PostController : Controller
     {
         private readonly BlogEngineContext _context;
+        private PostActions _postActions;
 
         public PostController(BlogEngineContext context)
         {
             _context = context;
+            _postActions = new PostActions(_context);
         }
 
         // GET: Post
         public async Task<IActionResult> Index()
         {
-            var PostsAsync = await _context.Post.Where(x => x.IsPublished == true).ToListAsync();
-            foreach (var item in PostsAsync)
-            {
-                item.Author = _context.Person.Where(x => x.Id == item.AuthorId).FirstOrDefault();
-                item.Approver = _context.Person.Where(x => x.Id == item.ApproverId).FirstOrDefault();
-            }
-            return View(PostsAsync);
+            return View(await _postActions.GetPostsAsync((int)Roles.None));
         }
 
         // GET: Post/Details/5
@@ -35,10 +35,8 @@ namespace BlogEngine.Web.Controllers
                 return NotFound();
             }
 
-            var post = await _context.Post.FirstOrDefaultAsync(m => m.Id == id);
-            post.Comment = _context.Comment.Where(x => x.PostId == id).ToList();
-            post.Author = _context.Person.Where(x => x.Id == post.AuthorId).FirstOrDefault();
-            post.Approver = _context.Person.Where(x => x.Id == post.ApproverId).FirstOrDefault();
+            List<Post> posts = await _postActions.GetPostsAsync((int)Roles.None, id);
+            var post = posts.FirstOrDefault();
             if (post == null)
             {
                 return NotFound();

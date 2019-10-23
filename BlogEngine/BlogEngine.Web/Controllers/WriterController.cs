@@ -7,22 +7,26 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using BlogEngine.BusinessLogic.Models;
 using BlogEngine.DataAccessLayer;
+using BlogEngine.Web.Actions;
+using BlogEngine.Web.Enums;
 
 namespace BlogEngine.Web.Controllers
 {
     public class WriterController : Controller
     {
         private readonly BlogEngineContext _context;
+        private PostActions _postActions;
 
         public WriterController(BlogEngineContext context)
         {
             _context = context;
+            _postActions = new PostActions(_context);
         }
 
         // GET: Writer
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Post.ToListAsync());
+            return View(await _postActions.GetPostsAsync((int)Roles.Writer));
         }
 
         // GET: Writer/Details/5
@@ -33,8 +37,8 @@ namespace BlogEngine.Web.Controllers
                 return NotFound();
             }
 
-            var post = await _context.Post
-                .FirstOrDefaultAsync(m => m.Id == id);
+            List<Post> posts = await _postActions.GetPostsAsync((int)Roles.Writer, id);
+            var post = posts.FirstOrDefault();
             if (post == null)
             {
                 return NotFound();
@@ -73,7 +77,8 @@ namespace BlogEngine.Web.Controllers
                 return NotFound();
             }
 
-            var post = await _context.Post.FindAsync(id);
+            List<Post> posts = await _postActions.GetPostsAsync((int)Roles.Writer, id);
+            var post = posts.FirstOrDefault();
             if (post == null)
             {
                 return NotFound();
@@ -86,7 +91,7 @@ namespace BlogEngine.Web.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(long id, [Bind("Id,Title,Body,ImageUrl,AuthorName,PendingToApprove,ApproverName,ApprovalDateTime,IsPublished,CreationDate,LastUpdated")] Post post)
+        public async Task<IActionResult> Edit(long id, string command, [Bind("Id,Title,Body,ImageUrl,AuthorId,PendingToApprove,ApproverId,ApprovalDateTime,IsPublished,CreationDate")] Post post)
         {
             if (id != post.Id)
             {
@@ -97,6 +102,12 @@ namespace BlogEngine.Web.Controllers
             {
                 try
                 {
+                    if(command.Equals("Publish"))
+                    {
+                        post.PendingToApprove = true;
+                        post.IsPublished = false;
+                    }
+                    post.LastUpdated = DateTime.Now;
                     _context.Update(post);
                     await _context.SaveChangesAsync();
                 }

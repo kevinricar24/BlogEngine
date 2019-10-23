@@ -3,16 +3,18 @@
 @{
     ViewData["Title"] = "Edit";
 }
-
-<h1>Edit</h1>
-
-<h4>Post</h4>
+<h5>Post</h5>
 <hr />
 <div class="row">
-    <div class="col-md-4">
+    <div class="col-md-9">
         <form asp-action="Edit">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <input type="hidden" asp-for="Id" />
+            <input type="hidden" asp-for="AuthorId" />
+            <input type="hidden" asp-for="ApproverId" />
+            <input type="hidden" asp-for="ApprovalDateTime" />
+            <input type="hidden" asp-for="IsPublished" />
+            <input type="hidden" asp-for="CreationDate" />
             <div class="form-group">
                 <label asp-for="Title" class="control-label"></label>
                 <input asp-for="Title" class="form-control" />
@@ -20,7 +22,7 @@
             </div>
             <div class="form-group">
                 <label asp-for="Body" class="control-label"></label>
-                <input asp-for="Body" class="form-control" />
+                <textarea asp-for="Body" class="form-control" rows="7"></textarea>
                 <span asp-validation-for="Body" class="text-danger"></span>
             </div>
             <div class="form-group">
@@ -29,12 +31,16 @@
                 <span asp-validation-for="ImageUrl" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Author.Name" class="control-label"></label>
-                <input asp-for="Author.Name" class="form-control" readonly/>
+                <label asp-for="Author" class="control-label"></label>
+                <input asp-for="Author.Name" class="form-control" readonly />
                 <span asp-validation-for="Author.Name" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <input type="submit" value="Save" class="btn btn-primary" />
+                @if (Model.IsPublished != null && Model.IsPublished == false)
+                {
+                <input type="submit" name="command" value="Draft" class="btn btn-secondary" />
+                }
+                <input type="submit" name="command" value="Publish" class="btn btn-primary" />
             </div>
         </form>
     </div>
