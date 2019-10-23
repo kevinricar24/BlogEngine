@@ -58,10 +58,24 @@ namespace BlogEngine.Web.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Title,Body,ImageUrl,AuthorName,PendingToApprove,ApproverName,ApprovalDateTime,IsPublished,CreationDate,LastUpdated")] Post post)
+        public async Task<IActionResult> Create(string command, [Bind("Id,Title,Body,ImageUrl")] Post post)
         {
             if (ModelState.IsValid)
             {
+                post.Author = _context.Person.Where(x => x.RoleId == (int)Roles.Writer).FirstOrDefault();
+                post.AuthorId = post.Author.Id;
+                DateTime currentDateTime = DateTime.Now;
+                post.CreationDate = currentDateTime;
+                post.LastUpdated = currentDateTime;
+
+                if (command.Equals("Publish"))
+                {
+                    post.PendingToApprove = true;
+                }
+                else if(command.Equals("Draft"))
+                {
+                    post.PendingToApprove = false;
+                }
                 _context.Add(post);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
