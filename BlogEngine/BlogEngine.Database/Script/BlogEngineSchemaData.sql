@@ -1,5 +1,5 @@
 ﻿
-CREATE DATABASE BlogEngine
+CREATE DATABASE [BlogEngine]
 GO
 PRINT 'BlogEngine DATABASE CREATED'		
 
@@ -46,7 +46,7 @@ BEGIN
 	CreationDate DATETIME NOT NULL,
 	LastUpdated DATETIME NOT NULL,
 	PRIMARY KEY (Id),
-	FOREIGN KEY (RoleId) REFERENCES Role(Id) 
+	FOREIGN KEY (RoleId) REFERENCES Role(Id) ON DELETE CASCADE
 	)
 	PRINT @PersonTable + ' TABLE CREATED'
 END
@@ -83,7 +83,7 @@ BEGIN
 	CreationDate DATETIME NOT NULL,
 	LastUpdated DATETIME NOT NULL,
 	PRIMARY KEY (Id),
-	FOREIGN KEY (PostId) REFERENCES Post(Id) 
+	FOREIGN KEY (PostId) REFERENCES Post(Id) ON DELETE CASCADE
 	)
 	PRINT @CommentTable + ' TABLE CREATED'
 END
@@ -101,21 +101,21 @@ BEGIN
 	PRINT 'Role '+ @RoleEditor +' DATA INSERTED'
 END
 
-IF NOT EXISTS (SELECT * FROM Person WHERE name='User Writer')
+IF NOT EXISTS (SELECT * FROM Person WHERE name='Sejin, Kevin')
 BEGIN
 	DECLARE @RoleWriterId INT = (select Id from Role where Name = @RoleWriter);
         
 	INSERT INTO [dbo].[Person] (RoleId, Name, UserName, Email, Pass, CreationDate, LastUpdated) 
-	VALUES (@RoleWriterId, 'User Writer', 'userwriter', 'userwriter@test.com', 'userwriter', GETDATE(), GETDATE())
+	VALUES (@RoleWriterId, 'Sejin, Kevin', 'userwriter', 'userwriter@test.com', 'userwriter', GETDATE(), GETDATE())
 	PRINT 'User Writer DATA INSERTED'
 END
 
-IF NOT EXISTS (SELECT * FROM Person WHERE name='User Editor')
+IF NOT EXISTS (SELECT * FROM Person WHERE name='Mendez, Celeste')
 BEGIN
 	DECLARE @RoleEditorId INT = (select Id from Role where Name = @RoleEditor);
         
 	INSERT INTO [dbo].[Person] (RoleId, Name, UserName, Email, Pass, CreationDate, LastUpdated) 
-	VALUES (@RoleEditorId, 'User Editor', 'usereditor', 'usereditor@test.com', 'usereditor', GETDATE(), GETDATE())
+	VALUES (@RoleEditorId, 'Mendez, Celeste', 'usereditor', 'usereditor@test.com', 'usereditor', GETDATE(), GETDATE())
 	PRINT 'User Editor DATA INSERTED'
 END
 
