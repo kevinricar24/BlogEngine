@@ -18,7 +18,7 @@ Requirements:
 - BlogEngine.DataAccessLayer
 - BlogEngine.Web
 
-Steps to run the Application
+# Steps to run the Application
 
 1) Execute the script BlogEngineSchemaData.sql located in BlogEngine.Database\Script
 2) Execute the project BlogEngine.Web (please Set as StartUp Project )
@@ -33,14 +33,14 @@ Steps to run the Application
 7) Add Comment in the post
 
 
-![alt text](Images/image1.png "view")
+![alt text](Images/Image1.png "view")
 
-![alt text](Images/image2.png "view")
+![alt text](Images/Image2.png "view")
 
-![alt text](Images/image3.png "view")
+![alt text](Images/Image3.png "view")
 
-![alt text](Images/image4.png "view")
+![alt text](Images/Image4.png "view")
 
-![alt text](Images/image5.png "view")
+![alt text](Images/Image5.png "view")
 
 
