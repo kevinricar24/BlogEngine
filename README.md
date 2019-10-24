@@ -11,7 +11,7 @@ Requirements:
 - Microsoft.VisualStudio.Web.CodeGeneration.Design  Version="3.0.0"
 
 
-# Web Application
+# ASP.NET Core Web Application
 
 - BlogEngine.Database
 - BlogEngine.BusinessLogic
