@@ -8,11 +8,11 @@ namespace BlogEngine.Web.Controllers
 {
     public class CommentsController : Controller
     {
-        private readonly BlogEngineContext _context;
+        private readonly IUnitOfWork uow;
 
-        public CommentsController(BlogEngineContext context)
+        public CommentsController(IUnitOfWork unityOfWork)
         {
-            _context = context;
+            uow = unityOfWork;
         }
 
         [HttpPost]
@@ -31,8 +31,8 @@ namespace BlogEngine.Web.Controllers
                     CreationDate = currentDateTime,
                     LastUpdated = currentDateTime
                 };
-                _context.Add(comment);
-                await _context.SaveChangesAsync();
+                uow.CommentRepository.Insert(comment);
+                await uow.SaveAsync();
             }
             return RedirectToAction("Details", "Post", new { id = postId });
         }

@@ -21,6 +21,7 @@ namespace BlogEngine.Web
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddDbContext<BlogEngineContext>(options => options.UseSqlServer(Configuration.GetConnectionString("DatabaseConnection")));
+            services.AddScoped<IUnitOfWork, UnitOfWork>();
             services.AddControllersWithViews();
         }
 

@@ -1,65 +1,57 @@
 ﻿using BlogEngine.BusinessLogic.Models;
 using BlogEngine.DataAccessLayer;
 using BlogEngine.Web.Enums;
-using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace BlogEngine.Web.Actions
 {
     public class PostActions
     {
-        private readonly BlogEngineContext _context;
+        private readonly IUnitOfWork uow;
 
-        public PostActions(BlogEngineContext context)
+        public PostActions(IUnitOfWork unityOfWork)
         {
-            _context = context;
+            uow = unityOfWork;
         }
 
-        public async Task<List<Post>> GetPostsAsync(int role, long? id = null)
+        public async Task<IEnumerable<Post>> GetPostsAsync(int role, long? id = null)
         {
-            List<Post> Posts = null;
+            IEnumerable<Post> Posts = null;
+            string includes = "Comment,Author,Approver";
 
-            if(role == (int)Roles.Writer)
+            if (role == (int)Roles.Writer)
             {
                 if (id != null)
                 {
-                    Posts = await _context.Post.Where(x => x.Id == id).ToListAsync();
+                    Posts = await uow.PostRepository.GetAsync(x => x.Id == id, includeProperties: includes);
                 }
                 else
                 {
-                    Posts = await _context.Post.ToListAsync();
+                    Posts = await uow.PostRepository.GetAsync(includeProperties: includes);
                 }
             }
             else if (role == (int)Roles.Editor)
             {
                 if (id != null)
                 {
-                    Posts = await _context.Post.Where(x => x.PendingToApprove == true && x.Id == id).ToListAsync();
+                    Posts = await uow.PostRepository.GetAsync(x => x.PendingToApprove == true && x.Id == id, includeProperties: includes);
                 }
                 else
                 {
-                    Posts = await _context.Post.Where(x => x.PendingToApprove == true).ToListAsync();
+                    Posts = await uow.PostRepository.GetAsync(x => x.PendingToApprove == true, includeProperties: includes);
                 }
             }
             else if (role == (int)Roles.None)
             {
                 if (id != null)
                 {
-                    Posts = await _context.Post.Where(x => x.IsPublished == true && x.Id == id).ToListAsync();
+                    Posts = await uow.PostRepository.GetAsync(x => x.IsPublished == true && x.Id == id, includeProperties: includes);
                 }
                 else
                 {
-                    Posts = await _context.Post.Where(x => x.IsPublished == true).ToListAsync();
+                    Posts = await uow.PostRepository.GetAsync(x => x.IsPublished == true, includeProperties: includes);
                 }
-            }
-
-            foreach (var item in Posts)
-            {
-                item.Author = _context.Person.Where(x => x.Id == item.AuthorId).FirstOrDefault();
-                item.Approver = _context.Person.Where(x => x.Id == item.ApproverId).FirstOrDefault();
-                item.Comment = _context.Comment.Where(x => x.PostId == item.Id).ToList();
             }
 
             return Posts;

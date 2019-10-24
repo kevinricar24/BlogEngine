@@ -13,13 +13,13 @@ namespace BlogEngine.Web.Controllers
 {
     public class WriterController : Controller
     {
-        private readonly BlogEngineContext _context;
+        private readonly IUnitOfWork uow;
         private PostActions _postActions;
 
-        public WriterController(BlogEngineContext context)
+        public WriterController(IUnitOfWork unityOfWork)
         {
-            _context = context;
-            _postActions = new PostActions(_context);
+            uow = unityOfWork;
+            _postActions = new PostActions(uow);
         }
 
         public async Task<IActionResult> Index()
@@ -34,7 +34,7 @@ namespace BlogEngine.Web.Controllers
                 return NotFound();
             }
 
-            List<Post> posts = await _postActions.GetPostsAsync((int)Roles.Writer, id);
+            IEnumerable<Post> posts = await _postActions.GetPostsAsync((int)Roles.Writer, id);
             var post = posts.FirstOrDefault();
             if (post == null)
             {
@@ -55,7 +55,7 @@ namespace BlogEngine.Web.Controllers
         {
             if (ModelState.IsValid)
             {
-                post.Author = _context.Person.Where(x => x.RoleId == (int)Roles.Writer).FirstOrDefault();
+                post.Author = uow.PersonRepository.Get(x => x.RoleId == (int)Roles.Writer).FirstOrDefault();
                 post.AuthorId = post.Author.Id;
                 DateTime currentDateTime = DateTime.Now;
                 post.CreationDate = currentDateTime;
@@ -69,8 +69,8 @@ namespace BlogEngine.Web.Controllers
                 {
                     post.PendingToApprove = false;
                 }
-                _context.Add(post);
-                await _context.SaveChangesAsync();
+                uow.PostRepository.Insert(post);
+                await uow.SaveAsync();
                 return RedirectToAction(nameof(Index));
             }
             return View(post);
@@ -83,7 +83,7 @@ namespace BlogEngine.Web.Controllers
                 return NotFound();
             }
 
-            List<Post> posts = await _postActions.GetPostsAsync((int)Roles.Writer, id);
+            IEnumerable<Post> posts = await _postActions.GetPostsAsync((int)Roles.Writer, id);
             var post = posts.FirstOrDefault();
             if (post == null)
             {
@@ -111,8 +111,9 @@ namespace BlogEngine.Web.Controllers
                         post.IsPublished = false;
                     }
                     post.LastUpdated = DateTime.Now;
-                    _context.Update(post);
-                    await _context.SaveChangesAsync();
+
+                    uow.PostRepository.Update(post);
+                    await uow.SaveAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
@@ -137,8 +138,7 @@ namespace BlogEngine.Web.Controllers
                 return NotFound();
             }
 
-            var post = await _context.Post
-                .FirstOrDefaultAsync(m => m.Id == id);
+            var post = await uow.PostRepository.GetByIdAsync(id);
             if (post == null)
             {
                 return NotFound();
@@ -151,15 +151,16 @@ namespace BlogEngine.Web.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(long id)
         {
-            var post = await _context.Post.FindAsync(id);
-            _context.Post.Remove(post);
-            await _context.SaveChangesAsync();
+            var post = await uow.PostRepository.GetByIdAsync(id);
+            uow.PostRepository.Delete(post);
+            await uow.SaveAsync();
             return RedirectToAction(nameof(Index));
         }
 
         private bool PostExists(long id)
         {
-            return _context.Post.Any(e => e.Id == id);
+            var exist = uow.PostRepository.GetById(id);
+            return exist == null ? false : true;
         }
     }
 }

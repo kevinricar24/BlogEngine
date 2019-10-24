@@ -12,13 +12,13 @@ namespace BlogEngine.Web.Controllers
 {
     public class PostController : Controller
     {
-        private readonly BlogEngineContext _context;
+        private readonly IUnitOfWork uow;
         private PostActions _postActions;
 
-        public PostController(BlogEngineContext context)
+        public PostController(IUnitOfWork unityOfWork)
         {
-            _context = context;
-            _postActions = new PostActions(_context);
+            uow = unityOfWork;
+            _postActions = new PostActions(uow);
         }
 
         public async Task<IActionResult> Index()
@@ -33,7 +33,7 @@ namespace BlogEngine.Web.Controllers
                 return NotFound();
             }
 
-            List<Post> posts = await _postActions.GetPostsAsync((int)Roles.None, id);
+            IEnumerable<Post> posts = await _postActions.GetPostsAsync((int)Roles.None, id);
             var post = posts.FirstOrDefault();
             if (post == null)
             {

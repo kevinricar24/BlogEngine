@@ -13,13 +13,13 @@ namespace BlogEngine.Web.Controllers
 {
     public class EditorController : Controller
     {
-        private readonly BlogEngineContext _context;
+        private readonly IUnitOfWork uow;
         private PostActions _postActions;
 
-        public EditorController(BlogEngineContext context)
+        public EditorController(IUnitOfWork unityOfWork)
         {
-            _context = context;
-            _postActions = new PostActions(_context);
+            uow = unityOfWork;
+            _postActions = new PostActions(uow);
         }
 
         public async Task<IActionResult> Index()
@@ -34,7 +34,7 @@ namespace BlogEngine.Web.Controllers
                 return NotFound();
             }
 
-            List<Post> posts = await _postActions.GetPostsAsync((int)Roles.Editor, id);
+            IEnumerable<Post> posts = await _postActions.GetPostsAsync((int)Roles.Editor, id);
             var post = posts.FirstOrDefault();
             if (post == null)
             {
@@ -48,7 +48,7 @@ namespace BlogEngine.Web.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(long id, string command)
         {
-            var post = await _context.Post.FindAsync(id);
+            var post = await uow.PostRepository.GetByIdAsync(id);
             if (post == null)
             {
                 return NotFound();
@@ -62,7 +62,7 @@ namespace BlogEngine.Web.Controllers
 
                 if (command.Equals("Approve"))
                 {
-                    post.Approver = _context.Person.Where(x => x.RoleId == (int)Roles.Editor).FirstOrDefault();
+                    post.Approver = uow.PersonRepository.Get(x => x.RoleId == (int)Roles.Editor).FirstOrDefault();
                     post.ApproverId = post.Approver.Id;
                     post.ApprovalDateTime = currentDateTime;
                     post.IsPublished = true;
@@ -70,8 +70,8 @@ namespace BlogEngine.Web.Controllers
 
                 try
                 {
-                    _context.Update(post);
-                    await _context.SaveChangesAsync();
+                    uow.PostRepository.Update(post);
+                    await uow.SaveAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
@@ -91,7 +91,8 @@ namespace BlogEngine.Web.Controllers
 
         private bool PostExists(long id)
         {
-            return _context.Post.Any(e => e.Id == id);
+            var exist = uow.PostRepository.GetById(id);
+            return exist == null ? false : true;
         }
     }
 }

@@ -9,11 +9,11 @@ namespace BlogEngine.Web.Controllers
 {
     public class LoginController : Controller
     {
-        private readonly BlogEngineContext _context;
+        private readonly IUnitOfWork uow;
 
-        public LoginController(BlogEngineContext context)
+        public LoginController(IUnitOfWork unityOfWork)
         {
-            _context = context;
+            uow = unityOfWork;
         }
 
         public IActionResult Index()
@@ -29,7 +29,7 @@ namespace BlogEngine.Web.Controllers
             {
                 if (!string.IsNullOrEmpty(person.UserName) && !string.IsNullOrEmpty(person.Pass))
                 {
-                    var persons = await _context.Person.ToListAsync();
+                    var persons = await uow.PersonRepository.GetAsync();
                     foreach (var item in persons)
                     {
                         if ((item.UserName == person.UserName || item.Email == person.UserName) && item.Pass == person.Pass)
