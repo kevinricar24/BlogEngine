@@ -15,6 +15,12 @@ namespace BlogEngine.Web.Actions
             uow = unityOfWork;
         }
 
+        /// <summary>
+        /// Method Designed to get the Post to each role type (writer, editor and none)
+        /// </summary>
+        /// <param name="role"></param>
+        /// <param name="id"></param>
+        /// <returns></returns>
         public async Task<IEnumerable<Post>> GetPostsAsync(int role, long? id = null)
         {
             IEnumerable<Post> Posts = null;

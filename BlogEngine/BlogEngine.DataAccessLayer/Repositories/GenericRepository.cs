@@ -19,6 +19,13 @@ namespace BlogEngine.DataAccessLayer.Repositories
             this.dbSet = context.Set<TEntity>();
         }
 
+        /// <summary>
+        /// Method used to get a list of type IEnumerable of any Entity
+        /// </summary>
+        /// <param name="filter"></param>
+        /// <param name="orderBy"></param>
+        /// <param name="includeProperties"></param>
+        /// <returns></returns>
         public virtual IEnumerable<TEntity> Get(
             Expression<Func<TEntity, bool>> filter = null,
             Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>> orderBy = null,
@@ -47,6 +54,11 @@ namespace BlogEngine.DataAccessLayer.Repositories
             }
         }
 
+        /// <summary>
+        /// Method used to get a object of type Entity
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         public virtual TEntity GetById(object id)
         {
             return dbSet.Find(id);
@@ -78,8 +90,13 @@ namespace BlogEngine.DataAccessLayer.Repositories
             _context.Entry(entityToUpdate).State = EntityState.Modified;
         }
 
-
-        //Async
+        /// <summary>
+        /// Method used to get a list async of type IEnumerable of any Entity
+        /// </summary>
+        /// <param name="filter"></param>
+        /// <param name="orderBy"></param>
+        /// <param name="includeProperties"></param>
+        /// <returns></returns>
         public virtual async Task<IEnumerable<TEntity>> GetAsync(
             Expression<Func<TEntity, bool>> filter = null,
             Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>> orderBy = null,
@@ -108,11 +125,21 @@ namespace BlogEngine.DataAccessLayer.Repositories
             }
         }
 
+        /// <summary>
+        /// /// Method used to get a object async of type Entity
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         public virtual async Task<TEntity> GetByIdAsync(object id)
         {
             return await dbSet.FindAsync(id);
         }
 
+        /// <summary>
+        /// /// Method used to Insert async a new object of Entity type
+        /// </summary>
+        /// <param name="entity"></param>
+        /// <returns></returns>
         public virtual async Task InsertAsync(TEntity entity)
         {
             await dbSet.AddAsync(entity);
