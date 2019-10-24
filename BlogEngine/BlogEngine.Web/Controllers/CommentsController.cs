@@ -18,14 +18,12 @@ namespace BlogEngine.Web.Controllers
             _context = context;
         }
 
-        // GET: Comments
         public async Task<IActionResult> Index()
         {
             var blogEngineContext = _context.Comment.Include(c => c.Post);
             return View(await blogEngineContext.ToListAsync());
         }
 
-        // GET: Comments/Details/5
         public async Task<IActionResult> Details(long? id)
         {
             if (id == null)

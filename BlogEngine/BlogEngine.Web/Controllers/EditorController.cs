@@ -1,14 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.EntityFrameworkCore;
-using BlogEngine.BusinessLogic.Models;
+﻿using BlogEngine.BusinessLogic.Models;
 using BlogEngine.DataAccessLayer;
 using BlogEngine.Web.Actions;
 using BlogEngine.Web.Enums;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace BlogEngine.Web.Controllers
 {
@@ -23,13 +22,11 @@ namespace BlogEngine.Web.Controllers
             _postActions = new PostActions(_context);
         }
 
-        // GET: Editor
         public async Task<IActionResult> Index()
         {
             return View(await _postActions.GetPostsAsync((int)Roles.Editor));
         }
 
-        // GET: Editor/Details/5
         public async Task<IActionResult> Details(long? id)
         {
             if (id == null)

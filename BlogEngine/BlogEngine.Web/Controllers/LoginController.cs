@@ -16,15 +16,11 @@ namespace BlogEngine.Web.Controllers
             _context = context;
         }
 
-        // GET: Login
         public IActionResult Index()
         {
             return View();
         }
 
-        // POST: Login/Create
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Login([Bind("UserName,Pass")] Person person)
@@ -50,7 +46,7 @@ namespace BlogEngine.Web.Controllers
                     }
                 }
             }
-            return View();
+            return RedirectToAction("Index", "Login");
         }
     }
 }

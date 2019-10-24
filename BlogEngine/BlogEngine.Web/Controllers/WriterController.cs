@@ -22,13 +22,11 @@ namespace BlogEngine.Web.Controllers
             _postActions = new PostActions(_context);
         }
 
-        // GET: Writer
         public async Task<IActionResult> Index()
         {
             return View(await _postActions.GetPostsAsync((int)Roles.Writer));
         }
 
-        // GET: Writer/Details/5
         public async Task<IActionResult> Details(long? id)
         {
             if (id == null)
@@ -46,15 +44,11 @@ namespace BlogEngine.Web.Controllers
             return View(post);
         }
 
-        // GET: Writer/Create
         public IActionResult Create()
         {
             return View();
         }
 
-        // POST: Writer/Create
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(string command, [Bind("Id,Title,Body,ImageUrl")] Post post)
@@ -82,7 +76,6 @@ namespace BlogEngine.Web.Controllers
             return View(post);
         }
 
-        // GET: Writer/Edit/5
         public async Task<IActionResult> Edit(long? id)
         {
             if (id == null)
@@ -99,9 +92,6 @@ namespace BlogEngine.Web.Controllers
             return View(post);
         }
 
-        // POST: Writer/Edit/5
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(long id, string command, [Bind("Id,Title,Body,ImageUrl,AuthorId,PendingToApprove,ApproverId,ApprovalDateTime,IsPublished,CreationDate")] Post post)
@@ -140,7 +130,6 @@ namespace BlogEngine.Web.Controllers
             return View(post);
         }
 
-        // GET: Writer/Delete/5
         public async Task<IActionResult> Delete(long? id)
         {
             if (id == null)
@@ -158,7 +147,6 @@ namespace BlogEngine.Web.Controllers
             return View(post);
         }
 
-        // POST: Writer/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(long id)

@@ -21,13 +21,11 @@ namespace BlogEngine.Web.Controllers
             _postActions = new PostActions(_context);
         }
 
-        // GET: Post
         public async Task<IActionResult> Index()
         {
             return View(await _postActions.GetPostsAsync((int)Roles.None));
         }
 
-        // GET: Post/Details/5
         public async Task<IActionResult> Details(long? id)
         {
             if (id == null)
